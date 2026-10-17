@@ -1,0 +1,486 @@
+@import "tailwindcss";
+
+/* ─── JoyQuest Living Design System (Apple / Arc Inspired) ─── */
+:root,
+:root[data-theme="dark"],
+html.dark {
+  color-scheme: dark;
+
+  --color-surface-canvas: #0a0b10;
+  --color-surface-panel: #12131c;
+  --color-surface-card: rgba(20, 21, 32, 0.72);
+  --color-surface-card-hover: rgba(28, 30, 46, 0.88);
+  --color-surface-elevated: rgba(36, 38, 56, 0.95);
+  --color-surface-border: rgba(255, 255, 255, 0.09);
+  --color-surface-border-subtle: rgba(255, 255, 255, 0.05);
+  --color-surface-border-strong: rgba(255, 255, 255, 0.22);
+
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #cbd5e1;
+  --color-text-muted: #94a3b8;
+  --color-text-dim: #64748b;
+
+  --aurora-opacity: 0.18;
+  --nav-glass-bg: rgba(18, 18, 28, 0.82);
+  --nav-glass-border: rgba(255, 255, 255, 0.09);
+
+  --segmented-track-bg: rgba(22, 22, 34, 0.85);
+  --segmented-item-active-bg: rgba(255, 255, 255, 0.14);
+  --segmented-item-active-border: rgba(255, 255, 255, 0.18);
+  --segmented-item-active-text: #ffffff;
+  --segmented-text: #94a3b8;
+
+  --btn-primary-bg: #ffffff;
+  --btn-primary-text: #09090b;
+  --btn-primary-hover: #f1f5f9;
+  --btn-primary-shadow: 0 4px 20px rgba(255, 255, 255, 0.22);
+
+  --btn-secondary-bg: rgba(255, 255, 255, 0.07);
+  --btn-secondary-text: #f8fafc;
+  --btn-secondary-border: rgba(255, 255, 255, 0.12);
+  --btn-secondary-hover-bg: rgba(255, 255, 255, 0.13);
+
+  --btn-ghost-text: #cbd5e1;
+  --btn-ghost-hover-bg: rgba(255, 255, 255, 0.08);
+  --btn-ghost-hover-text: #ffffff;
+
+  --card-shadow: 0 10px 32px -4px rgba(0, 0, 0, 0.45);
+  --card-shadow-hover: 0 16px 40px -4px rgba(0, 0, 0, 0.6);
+
+  --input-bg: rgba(18, 19, 29, 0.85);
+  --input-text: #ffffff;
+  --input-border: rgba(255, 255, 255, 0.1);
+
+  --pill-bg: rgba(255, 255, 255, 0.06);
+  --pill-border: rgba(255, 255, 255, 0.08);
+  --pill-text: #cbd5e1;
+}
+
+:root[data-theme="light"],
+html.light {
+  color-scheme: light;
+
+  --color-surface-canvas: #f6f8fb;
+  --color-surface-panel: #ffffff;
+  --color-surface-card: rgba(255, 255, 255, 0.88);
+  --color-surface-card-hover: rgba(255, 255, 255, 0.98);
+  --color-surface-elevated: #ffffff;
+  --color-surface-border: rgba(0, 0, 0, 0.08);
+  --color-surface-border-subtle: rgba(0, 0, 0, 0.04);
+  --color-surface-border-strong: rgba(0, 0, 0, 0.18);
+
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #334155;
+  --color-text-muted: #64748b;
+  --color-text-dim: #94a3b8;
+
+  --aurora-opacity: 0.07;
+  --nav-glass-bg: rgba(255, 255, 255, 0.85);
+  --nav-glass-border: rgba(0, 0, 0, 0.08);
+
+  --segmented-track-bg: rgba(236, 240, 246, 0.92);
+  --segmented-item-active-bg: #ffffff;
+  --segmented-item-active-border: rgba(0, 0, 0, 0.08);
+  --segmented-item-active-text: #0f172a;
+  --segmented-text: #64748b;
+
+  --btn-primary-bg: #0f172a;
+  --btn-primary-text: #ffffff;
+  --btn-primary-hover: #1e293b;
+  --btn-primary-shadow: 0 4px 18px rgba(15, 23, 42, 0.18);
+
+  --btn-secondary-bg: rgba(0, 0, 0, 0.05);
+  --btn-secondary-text: #0f172a;
+  --btn-secondary-border: rgba(0, 0, 0, 0.1);
+  --btn-secondary-hover-bg: rgba(0, 0, 0, 0.08);
+
+  --btn-ghost-text: #475569;
+  --btn-ghost-hover-bg: rgba(0, 0, 0, 0.06);
+  --btn-ghost-hover-text: #0f172a;
+
+  --card-shadow: 0 10px 30px -4px rgba(15, 23, 42, 0.07), 0 2px 8px -2px rgba(15, 23, 42, 0.03);
+  --card-shadow-hover: 0 18px 40px -4px rgba(15, 23, 42, 0.12);
+
+  --input-bg: rgba(255, 255, 255, 0.95);
+  --input-text: #0f172a;
+  --input-border: rgba(0, 0, 0, 0.12);
+
+  --pill-bg: rgba(0, 0, 0, 0.04);
+  --pill-border: rgba(0, 0, 0, 0.08);
+  --pill-text: #334155;
+}
+
+/* ─── Rem-Based Adaptive Grid (Proportional Viewport Scaling) ─── */
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+@media (max-width: 1920px) { html { font-size: 0.833333vw; } } /* 1920 base */
+@media (max-width: 1440px) { html { font-size: 1.0vw; } }      /* 1440 base */
+@media (max-width: 1200px) { html { font-size: 1.15vw; } }     /* Laptop/Surface base */
+@media (max-width: 1024px) { html { font-size: 1.4vw; } }      /* Tablet Landscape */
+@media (max-width: 768px)  { html { font-size: 2.1vw; } }      /* Tablet Portrait */
+@media (max-width: 640px)  { html { font-size: 4.2vw; } }      /* Mobile (360-390 base) */
+
+/* ─── Global Reset & Base ─── */
+* {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root {
+  --spring-snappy: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --spring-card: cubic-bezier(0.16, 1, 0.3, 1);
+  --spring-text: cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-onest), 'Onest', -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  background-color: var(--mood-canvas-bg, var(--color-surface-canvas));
+  color: var(--color-text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  letter-spacing: -0.012em;
+  transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
+  position: relative;
+}
+
+/* ─── Ambient Living Aurora Canvas Effect ─── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background: 
+    radial-gradient(circle at 18% 15%, var(--mood-orb-1, rgba(255, 112, 184, 0.28)) 0%, transparent 48%),
+    radial-gradient(circle at 82% 80%, var(--mood-orb-2, rgba(255, 182, 193, 0.22)) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, var(--mood-orb-3, rgba(254, 215, 170, 0.18)) 0%, transparent 60%);
+  filter: blur(60px);
+  opacity: 0.85;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.living-aurora-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  opacity: var(--aurora-opacity);
+  transition: opacity 0.5s ease;
+}
+
+.aurora-orb-1 {
+  position: absolute;
+  top: -10%;
+  left: 15%;
+  width: 55vw;
+  height: 50vh;
+  background: radial-gradient(circle, var(--mood-orb-1, rgba(139, 92, 246, 0.3)) 0%, transparent 75%);
+  filter: blur(85px);
+  animation: floatOrb1 20s ease-in-out infinite alternate;
+  transition: background 0.8s ease;
+}
+
+.aurora-orb-2 {
+  position: absolute;
+  top: 15%;
+  right: 10%;
+  width: 50vw;
+  height: 45vh;
+  background: radial-gradient(circle, var(--mood-orb-2, rgba(6, 182, 212, 0.25)) 0%, transparent 75%);
+  filter: blur(85px);
+  animation: floatOrb2 24s ease-in-out infinite alternate;
+  transition: background 0.8s ease;
+}
+
+.aurora-orb-3 {
+  position: absolute;
+  bottom: 5%;
+  left: 25%;
+  width: 60vw;
+  height: 50vh;
+  background: radial-gradient(circle, var(--mood-orb-3, rgba(236, 72, 153, 0.22)) 0%, transparent 75%);
+  filter: blur(95px);
+  animation: floatOrb3 22s ease-in-out infinite alternate;
+  transition: background 0.8s ease;
+}
+
+@keyframes floatOrb1 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(60px, 40px) scale(1.1); }
+  100% { transform: translate(-40px, 70px) scale(0.95); }
+}
+
+@keyframes floatOrb2 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-70px, 50px) scale(1.08); }
+  100% { transform: translate(30px, -40px) scale(0.9); }
+}
+
+@keyframes floatOrb3 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(50px, -60px) scale(1.15); }
+  100% { transform: translate(-60px, 30px) scale(1); }
+}
+
+/* ─── Page Container (Responsive Desktop & Laptop Utilization) ─── */
+.page-container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 1.25rem 1rem 6.5rem;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .page-container {
+    padding: 1.75rem 1.75rem 5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .page-container {
+    padding: 2rem 2.25rem 5rem;
+  }
+}
+
+/* ─── Cards & Glassmorphism (Dynamic Mood Tinted) ─── */
+.apple-card {
+  background: var(--mood-card-bg, var(--color-surface-card));
+  border: 1px solid var(--mood-card-border, var(--color-surface-border));
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border-radius: 1.5rem;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--card-shadow), 0 0 28px -6px var(--mood-glow, transparent);
+}
+
+.apple-card:hover {
+  background: var(--mood-card-hover-bg, var(--color-surface-card-hover));
+  border-color: var(--mood-card-border-strong, var(--color-surface-border-strong));
+  box-shadow: var(--card-shadow-hover), 0 0 32px -4px var(--mood-glow, transparent);
+}
+
+.apple-card-interactive {
+  background: var(--mood-card-bg, var(--color-surface-card));
+  border: 1px solid var(--mood-card-border, var(--color-surface-border));
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border-radius: 1.5rem;
+  cursor: pointer;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--card-shadow), 0 0 28px -6px var(--mood-glow, transparent);
+}
+
+.apple-card-interactive:hover {
+  background: var(--mood-card-hover-bg, var(--color-surface-card-hover));
+  border-color: var(--mood-card-border-strong, var(--color-surface-border-strong));
+  transform: translateY(-2px);
+  box-shadow: var(--card-shadow-hover), 0 0 32px -4px var(--mood-glow, transparent);
+}
+
+.apple-card-interactive:active {
+  transform: scale(0.985);
+}
+
+/* ─── Luminous Buttons (Dynamic to Mood) ─── */
+.joy-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--mood-btn-bg, var(--btn-primary-bg));
+  color: var(--mood-btn-text, var(--btn-primary-text));
+  font-weight: 700;
+  font-size: 0.875rem;
+  padding: 0.75rem 1.625rem;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  box-shadow: var(--btn-primary-shadow), 0 4px 18px var(--mood-glow, rgba(0, 0, 0, 0.15));
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.joy-btn-primary:hover {
+  background: var(--btn-primary-hover);
+  transform: translateY(-1.5px);
+  box-shadow: var(--btn-primary-shadow);
+}
+
+.joy-btn-primary:active {
+  transform: scale(0.97);
+}
+
+.joy-btn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.joy-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  border: 1px solid var(--btn-secondary-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.joy-btn-secondary:hover {
+  background: var(--btn-secondary-hover-bg);
+  transform: translateY(-1px);
+}
+
+.joy-btn-secondary:active {
+  transform: scale(0.97);
+}
+
+.joy-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: transparent;
+  color: var(--btn-ghost-text);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  padding: 0.55rem 1rem;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.joy-btn-ghost:hover {
+  background: var(--btn-ghost-hover-bg);
+  color: var(--btn-ghost-hover-text);
+}
+
+/* ─── Apple Segmented Navigation Track ─── */
+.apple-segmented-track {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem;
+  background: var(--segmented-track-bg);
+  border: 1px solid var(--color-surface-border);
+  border-radius: 9999px;
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  gap: 0.25rem;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.apple-segmented-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--segmented-text);
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.apple-segmented-item:hover {
+  color: var(--color-text-primary);
+}
+
+.apple-segmented-item.active {
+  color: var(--segmented-item-active-text);
+  background: var(--segmented-item-active-bg);
+  border: 1px solid var(--segmented-item-active-border);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* ─── Inputs ─── */
+.apple-input {
+  width: 100%;
+  padding: 0.8125rem 1.125rem;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 0.875rem;
+  color: var(--input-text);
+  font-size: 0.875rem;
+  outline: none;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.apple-input:focus {
+  border-color: rgba(139, 92, 246, 0.65);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+}
+
+.apple-input::placeholder {
+  color: var(--color-text-dim);
+}
+
+/* ─── Apple Badges / Pills ─── */
+.apple-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.28rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--pill-bg);
+  border: 1px solid var(--pill-border);
+  color: var(--pill-text);
+  transition: all 0.2s ease;
+}
+
+/* ─── Pulsing Glow Animation ─── */
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface-border-strong);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-dim);
+}
