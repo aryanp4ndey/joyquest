@@ -11,6 +11,7 @@ import {
   isTTSPlaying,
   buildQuestNarration,
 } from '../utils/elevenlabs';
+import AudioVisualizer from './ui/AudioVisualizer';
 
 /**
  * VoiceNarrator — A mindful TTS control panel for quest cards.
@@ -187,15 +188,12 @@ export default function VoiceNarrator({ quest, accentColor = '#10e5aa', soundEna
           />
         </button>
 
-        {/* Real-time playing pulse indicator */}
+        {/* Real-time dancing audio visualizer */}
         {isPlaying && (
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[var(--color-surface-card)] border border-[var(--color-surface-border)]">
-            <span
-              className="w-2 h-2 rounded-full animate-ping"
-              style={{ backgroundColor: accentColor }}
-            />
+          <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-[var(--color-surface-card)] border border-[var(--color-surface-border)] shadow-sm">
+            <AudioVisualizer isPlaying={true} barCount={4} color="from-teal-400 to-cyan-400" />
             <span className="text-[0.6875rem] font-bold text-[var(--color-text-secondary)]">
-              Speaking in {currentLang.label} ({currentVoice.name})
+              {currentVoice.name} · {currentLang.label}
             </span>
           </div>
         )}

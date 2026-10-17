@@ -3,10 +3,10 @@ import { NextResponse } from 'next/server';
 const DEFAULT_OPENROUTER_KEY = process.env.OPENROUTER_API_KEY || '';
 
 const OPENROUTER_MODELS = [
-  'xingchen-agi/xing4.0-29b-a4b:free',
+  'google/gemini-2.0-flash-001',
+  'meta-llama/llama-3.3-70b-instruct:free',
   'nvidia/nemotron-3.5-lightning:free',
   'liquid/lfm-2.5-2.6b:free',
-  'google/gemini-2.0-flash-001',
 ];
 
 export async function POST(req) {
@@ -56,6 +56,7 @@ Respond ONLY with valid JSON in this exact structure:
             'HTTP-Referer': 'https://joyquest.app',
             'X-Title': 'JoyQuest AI',
           },
+          signal: AbortSignal.timeout(3000),
           body: JSON.stringify({
             model,
             messages: [

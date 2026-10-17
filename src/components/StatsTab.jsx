@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { playClickSound } from '../utils/audio';
+import SpotlightCard from './ui/SpotlightCard';
 
 const BADGE_VAULT = [
   {
@@ -96,7 +97,10 @@ export default function StatsTab() {
         {/* Left Column: Profile Card, 4 Metrics, Navigation */}
         <div className="lg:col-span-5 flex flex-col gap-5">
           {/* User Profile Header Card */}
-          <div className="apple-card p-6 text-center border-[var(--mood-card-border)] bg-[var(--mood-card-bg)] shadow-[0_8px_32px_rgba(0,0,0,0.12)]">
+          <SpotlightCard
+            spotlightColor="rgba(255, 112, 184, 0.25)"
+            className="p-6 text-center border-[var(--mood-card-border)] bg-[var(--mood-card-bg)] shadow-[0_12px_40px_rgba(0,0,0,0.18)]"
+          >
             <div className="relative inline-block mb-3">
               <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-[#ff70b8] via-[#10e5aa] to-[#a78bfa] p-0.5 shadow-md">
                 <div className="w-full h-full rounded-full bg-[var(--color-surface-panel)] flex items-center justify-center text-[var(--color-text-primary)] text-xl font-bold">
@@ -126,11 +130,15 @@ export default function StatsTab() {
                 <span>{state.currentStreak}d Streak</span>
               </span>
             </div>
-          </div>
+          </SpotlightCard>
 
-          {/* 4 Core Metrics Dashboard Tiles */}
+          {/* 4 Core Metrics Dashboard Tiles with Aceternity Tilt */}
           <div className="grid grid-cols-2 gap-3">
-            <div className="apple-card p-4 text-center">
+            <SpotlightCard
+              spotlightColor="rgba(6, 182, 212, 0.25)"
+              tilt={true}
+              className="p-4 text-center shadow-sm"
+            >
               <Clock size={16} className="text-cyan-400 mx-auto mb-1.5" />
               <span className="text-2xl font-black text-[var(--color-text-primary)] block">
                 {mindfulMinutes}m
@@ -138,9 +146,13 @@ export default function StatsTab() {
               <span className="text-[0.6875rem] font-bold text-[var(--color-text-muted)] uppercase tracking-wider block mt-0.5">
                 Mindful Minutes
               </span>
-            </div>
+            </SpotlightCard>
 
-            <div className="apple-card p-4 text-center">
+            <SpotlightCard
+              spotlightColor="rgba(16, 185, 129, 0.25)"
+              tilt={true}
+              className="p-4 text-center shadow-sm"
+            >
               <Target size={16} className="text-emerald-400 mx-auto mb-1.5" />
               <span className="text-2xl font-black text-[var(--color-text-primary)] block">
                 {state.questsCompleted}
@@ -148,9 +160,13 @@ export default function StatsTab() {
               <span className="text-[0.6875rem] font-bold text-[var(--color-text-muted)] uppercase tracking-wider block mt-0.5">
                 Quests Completed
               </span>
-            </div>
+            </SpotlightCard>
 
-            <div className="apple-card p-4 text-center">
+            <SpotlightCard
+              spotlightColor="rgba(255, 159, 67, 0.25)"
+              tilt={true}
+              className="p-4 text-center shadow-sm"
+            >
               <Flame size={16} className="text-[#ff9f43] mx-auto mb-1.5" />
               <span className="text-2xl font-black text-[#ff9f43] block">
                 {state.currentStreak}d
@@ -158,9 +174,13 @@ export default function StatsTab() {
               <span className="text-[0.6875rem] font-bold text-[var(--color-text-muted)] uppercase tracking-wider block mt-0.5">
                 Current Streak
               </span>
-            </div>
+            </SpotlightCard>
 
-            <div className="apple-card p-4 text-center">
+            <SpotlightCard
+              spotlightColor="rgba(168, 85, 247, 0.25)"
+              tilt={true}
+              className="p-4 text-center shadow-sm"
+            >
               <TrendingUp size={16} className="text-violet-400 mx-auto mb-1.5" />
               <span className="text-2xl font-black text-violet-400 block">
                 {innerBalanceScore}%
@@ -168,7 +188,7 @@ export default function StatsTab() {
               <span className="text-[0.6875rem] font-bold text-[var(--color-text-muted)] uppercase tracking-wider block mt-0.5">
                 Inner Balance
               </span>
-            </div>
+            </SpotlightCard>
           </div>
 
           {/* Quick Hub Links */}
@@ -226,7 +246,10 @@ export default function StatsTab() {
         {/* Right Column: Emotional Distribution Chart & Badge Vault */}
         <div className="lg:col-span-7 flex flex-col gap-5">
           {/* Emotional Distribution Chart (Horizontal Stacked Pill) */}
-          <div className="apple-card p-6">
+          <SpotlightCard
+            spotlightColor="rgba(168, 85, 247, 0.2)"
+            className="p-6 shadow-md"
+          >
             <div className="flex items-center justify-between mb-3.5">
               <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">
                 Emotional Distribution
@@ -269,10 +292,13 @@ export default function StatsTab() {
                 </div>
               ))}
             </div>
-          </div>
+          </SpotlightCard>
 
           {/* Illuminated Badge Vault */}
-          <div className="apple-card p-6">
+          <SpotlightCard
+            spotlightColor="rgba(245, 158, 11, 0.2)"
+            className="p-6 shadow-md"
+          >
             <div className="flex items-center justify-between mb-4">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block">
@@ -332,7 +358,7 @@ export default function StatsTab() {
                 );
               })}
             </div>
-          </div>
+          </SpotlightCard>
         </div>
       </div>
     </div>

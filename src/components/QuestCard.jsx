@@ -10,6 +10,8 @@ import { CATEGORIES } from '../data/quests';
 import IconRenderer from './IconRenderer';
 import BreathingOrb from './BreathingOrb';
 import VoiceNarrator from './VoiceNarrator';
+import SpotlightCard from './ui/SpotlightCard';
+import ShimmerButton from './ui/ShimmerButton';
 
 export default function QuestCard({ quest, startTime, timeLimit, onComplete, onSkip, loading }) {
   const { state } = useApp();
@@ -55,10 +57,11 @@ export default function QuestCard({ quest, startTime, timeLimit, onComplete, onS
   const dashOffset = circumference * (1 - progress);
 
   return (
-    <div
-      className="apple-card p-6 sm:p-8 relative overflow-hidden"
+    <SpotlightCard
+      className="p-6 sm:p-8 relative overflow-hidden"
+      spotlightColor={`${categoryMeta.color}30`}
       style={{
-        boxShadow: `0 8px 36px -4px ${categoryMeta.glow}`,
+        boxShadow: `0 12px 42px -4px ${categoryMeta.glow}`,
       }}
     >
       {/* Top ambient banner glow */}
@@ -276,19 +279,29 @@ export default function QuestCard({ quest, startTime, timeLimit, onComplete, onS
 
       {/* Action Buttons */}
       <div className="flex items-center gap-3">
-        <motion.button
-          onClick={onComplete}
-          disabled={!allStepsComplete}
-          className={`joy-btn-primary flex-1 py-3.5 ${
-            !allStepsComplete ? 'opacity-40 cursor-not-allowed' : ''
-          }`}
-          whileHover={allStepsComplete ? { scale: 1.02 } : {}}
-          whileTap={allStepsComplete ? { scale: 0.98 } : {}}
-          id="complete-quest-btn"
-        >
-          <Check size={16} strokeWidth={2.5} />
-          <span>Complete Quest &amp; Claim +45 XP</span>
-        </motion.button>
+        {allStepsComplete ? (
+          <ShimmerButton
+            onClick={onComplete}
+            shimmerColor="#34d399"
+            background="linear-gradient(135deg, #10b981 0%, #059669 100%)"
+            textColor="#ffffff"
+            className="flex-1 py-3.5 shadow-[0_4px_24px_rgba(16,185,129,0.35)]"
+            id="complete-quest-btn"
+          >
+            <Check size={16} strokeWidth={2.5} />
+            <span>Complete Quest &amp; Claim +45 XP</span>
+          </ShimmerButton>
+        ) : (
+          <motion.button
+            onClick={onComplete}
+            disabled={true}
+            className="joy-btn-primary flex-1 py-3.5 opacity-40 cursor-not-allowed"
+            id="complete-quest-btn"
+          >
+            <Check size={16} strokeWidth={2.5} />
+            <span>Complete Quest &amp; Claim +45 XP</span>
+          </motion.button>
+        )}
 
         <motion.button
           onClick={onSkip}
@@ -306,6 +319,6 @@ export default function QuestCard({ quest, startTime, timeLimit, onComplete, onS
           )}
         </motion.button>
       </div>
-    </div>
+    </SpotlightCard>
   );
 }

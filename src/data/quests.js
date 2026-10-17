@@ -141,6 +141,15 @@ export const CURATED_PRACTICES = [
   {
     id: 'emotional-balance',
     title: 'Emotional Balance',
+    description: 'Ground yourself in emotional steadiness through slow rhythmic breathing and gentle self-compassion.',
+    steps: [
+      'Take 3 slow abdominal breaths: inhale for 4 seconds, exhale for 6 seconds',
+      'Notice any tension in your shoulders or forehead, and gently soften those areas',
+      'Silently acknowledge your present state: "It is okay to pause and be right here"',
+      'Place a hand over your heart and rest in steady, calm awareness for 1 minute',
+    ],
+    reward: 'Centered Soul',
+    points: 25,
     duration: '15 min',
     category: 'reflection',
     color: '#0e1017',
@@ -151,6 +160,15 @@ export const CURATED_PRACTICES = [
   {
     id: 'calm-relaxation',
     title: 'Calm Relaxation',
+    description: 'Unwind mental tension and let your nervous system transition into tranquil rest and ease.',
+    steps: [
+      'Soften your gaze or close your eyes and listen to the subtle room sounds around you',
+      'Inhale deeply through your nose, feeling the cool breath expand your ribs',
+      'Exhale slowly through your mouth, letting heavy thoughts melt away',
+      'Repeat 5 mindful breathing cycles, savoring the stillness between each breath',
+    ],
+    reward: 'Tranquil Mind',
+    points: 20,
     duration: '12 min',
     category: 'nature',
     color: '#ffffff',
@@ -160,17 +178,36 @@ export const CURATED_PRACTICES = [
   },
   {
     id: 'morning-gratitude',
-    title: 'Morning Gratitude',
+    title: 'Morning Gratitude & Wonder',
+    description: 'Anchor your awareness in warmth and ease by honoring 3 specific blessings right now.',
+    steps: [
+      'Name 1 simple physical comfort you enjoyed today (warm water, a cozy bed, morning air)',
+      'Recall 1 person whose presence, kindness, or memory brings ease to your heart',
+      'Acknowledge 1 small effort or strength you displayed recently',
+      'Take 3 slow breaths, allowing quiet appreciation to settle into your body',
+    ],
+    reward: 'Morning Light',
+    points: 25,
     duration: '5 min',
     period: 'Morning',
     category: 'kindness',
     bg: '#7eeded',
-    textColor: '#0c1a1e',
+    color: '#0891b2',
+    textColor: '#ffffff',
     playColor: '#111218',
   },
   {
     id: 'serenity-before-sleep',
     title: 'Serenity Before Sleep',
+    description: 'Release the day completely and invite restorative, peaceful rest for your body and mind.',
+    steps: [
+      'Disconnect from screens and sit or lie in a comfortable, relaxed position',
+      'Take 4 deep cleansing breaths, extending each exhale longer than the inhale',
+      'Mentally release today’s unfinished tasks: "Today is complete, tomorrow is a new canvas"',
+      'Close your eyes and focus on the quiet heaviness of your resting body',
+    ],
+    reward: 'Starlight Peace',
+    points: 20,
     duration: '10 min',
     period: 'Evening',
     category: 'reflection',
@@ -833,6 +870,7 @@ export async function generateQuest(mood, timeOption, category, apiKey = null) {
         category,
         apiKey: apiKey || undefined,
       }),
+      signal: AbortSignal.timeout(3500),
     });
 
     if (response.ok) {

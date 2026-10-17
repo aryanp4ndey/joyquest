@@ -7,6 +7,7 @@ import { useApp } from '../context/AppContext';
 import { GARDEN_PLANTS } from '../data/quests';
 import IconRenderer from './IconRenderer';
 import { playClickSound, playBowlTone } from '../utils/audio';
+import SpotlightCard from './ui/SpotlightCard';
 
 export default function GardenTab() {
   const { state, actions } = useApp();
@@ -55,7 +56,10 @@ export default function GardenTab() {
       </div>
 
       {/* ─── 6-Slot Zen Terrarium Garden (4 Growth Stages: Seed -> Sprout -> Bud -> Blossom) ─── */}
-      <div className="apple-card p-6 sm:p-7 mb-8 border-[var(--mood-card-border)] bg-[var(--mood-card-bg)] shadow-[0_8px_32px_rgba(0,0,0,0.12)]">
+      <SpotlightCard
+        spotlightColor="rgba(16, 185, 129, 0.22)"
+        className="p-6 sm:p-7 mb-8 border-[var(--mood-card-border)] bg-[var(--mood-card-bg)] shadow-[0_12px_44px_rgba(0,0,0,0.2)]"
+      >
         <div className="flex items-center justify-between mb-4">
           <div>
             <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block">
@@ -152,35 +156,47 @@ export default function GardenTab() {
             );
           })}
         </div>
-      </div>
+      </SpotlightCard>
 
-      {/* Sanctuary Metrics */}
+      {/* Sanctuary Metrics Bento Grid */}
       <div className="grid grid-cols-3 gap-3 mb-8">
-        <div className="apple-card p-4 text-center border-emerald-500/20 bg-emerald-500/5">
-          <span className="text-[0.6875rem] text-emerald-500 uppercase font-bold tracking-wider block mb-1">
+        <SpotlightCard
+          spotlightColor="rgba(16, 185, 129, 0.25)"
+          tilt={true}
+          className="p-4 text-center border-emerald-500/20 bg-emerald-500/5 shadow-md"
+        >
+          <span className="text-[0.6875rem] text-emerald-400 uppercase font-bold tracking-wider block mb-1">
             Planted Specimens
           </span>
           <span className="text-2xl sm:text-3xl font-extrabold text-[var(--color-text-primary)] tracking-tight">
             {plants.length}
           </span>
-        </div>
-        <div className="apple-card p-4 text-center border-amber-500/20 bg-amber-500/5">
-          <span className="text-[0.6875rem] text-amber-500 uppercase font-bold tracking-wider block mb-1">
+        </SpotlightCard>
+        <SpotlightCard
+          spotlightColor="rgba(245, 158, 11, 0.25)"
+          tilt={true}
+          className="p-4 text-center border-amber-500/20 bg-amber-500/5 shadow-md"
+        >
+          <span className="text-[0.6875rem] text-amber-400 uppercase font-bold tracking-wider block mb-1">
             Species Discovered
           </span>
           <span className="text-2xl sm:text-3xl font-extrabold text-[var(--color-text-primary)] tracking-tight">
             {GARDEN_PLANTS.filter((p) => p.minQuests <= state.questsCompleted).length}
             <span className="text-xs text-[var(--color-text-muted)] font-normal"> / {GARDEN_PLANTS.length}</span>
           </span>
-        </div>
-        <div className="apple-card p-4 text-center border-violet-500/20 bg-violet-500/5">
+        </SpotlightCard>
+        <SpotlightCard
+          spotlightColor="rgba(168, 85, 247, 0.25)"
+          tilt={true}
+          className="p-4 text-center border-violet-500/20 bg-violet-500/5 shadow-md"
+        >
           <span className="text-[0.6875rem] text-violet-400 uppercase font-bold tracking-wider block mb-1">
             Sanctuary Rank
           </span>
           <span className="text-xl sm:text-2xl font-extrabold text-[var(--color-text-primary)] tracking-tight">
             {plants.length >= 15 ? 'Venerable' : plants.length >= 8 ? 'Flourishing' : plants.length >= 3 ? 'Sprouting' : 'Nascent'}
           </span>
-        </div>
+        </SpotlightCard>
       </div>
 
       {/* Filter Tabs */}
@@ -213,19 +229,19 @@ export default function GardenTab() {
         {filteredPlants.map((plant) => {
           const isUnlocked = state.questsCompleted >= plant.minQuests;
           return (
-            <motion.button
+            <SpotlightCard
               key={plant.id}
               onClick={() => handlePlantClick({ ...plant, isUnlocked })}
-              className={`apple-card p-4 flex flex-col items-center text-center relative overflow-hidden group cursor-pointer ${
+              spotlightColor={isUnlocked ? `${plant.color}35` : 'rgba(255, 255, 255, 0.08)'}
+              tilt={true}
+              className={`p-4 flex flex-col items-center text-center relative overflow-hidden group cursor-pointer transition-all duration-300 ${
                 isUnlocked
                   ? 'border-[var(--color-surface-border)] hover:border-[var(--color-surface-border-strong)]'
                   : 'opacity-40 border-dashed border-zinc-500/30'
               }`}
               style={{
-                boxShadow: isUnlocked ? `0 4px 20px -2px ${plant.color}30` : undefined,
+                boxShadow: isUnlocked ? `0 8px 24px -4px ${plant.color}25` : undefined,
               }}
-              whileHover={{ y: -3, scale: 1.02 }}
-              whileTap={{ scale: 0.97 }}
             >
               <div
                 className="w-12 h-12 rounded-xl mb-3 flex items-center justify-center transition-transform group-hover:scale-110 shadow-sm"
@@ -251,7 +267,7 @@ export default function GardenTab() {
               >
                 {isUnlocked ? plant.rarity : `Unlock at ${plant.minQuests} quests`}
               </span>
-            </motion.button>
+            </SpotlightCard>
           );
         })}
       </div>

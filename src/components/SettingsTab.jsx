@@ -19,6 +19,8 @@ import {
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { playCompleteSound, playClickSound } from '../utils/audio';
+import SpotlightCard from './ui/SpotlightCard';
+import ShimmerButton from './ui/ShimmerButton';
 
 export default function SettingsTab() {
   const { state, actions } = useApp();
@@ -78,9 +80,12 @@ export default function SettingsTab() {
 
       <div className="space-y-4">
         {/* Section 0: Appearance / Theme */}
-        <div className="apple-card p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <SpotlightCard
+          spotlightColor="rgba(168, 85, 247, 0.2)"
+          className="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm"
+        >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-violet-500/15 border border-violet-500/25 flex items-center justify-center text-violet-400 shrink-0">
+            <div className="w-10 h-10 rounded-2xl bg-violet-500/15 border border-violet-500/25 flex items-center justify-center text-violet-400 shrink-0 shadow-sm">
               {state.theme === 'light' ? <Sun size={18} /> : <Moon size={18} />}
             </div>
             <div>
@@ -119,13 +124,16 @@ export default function SettingsTab() {
               <span>Dark Mode</span>
             </button>
           </div>
-        </div>
+        </SpotlightCard>
 
         {/* Section 1: AI Integration */}
-        <div className="apple-card p-5 sm:p-6 border-violet-500/20 bg-gradient-to-b from-violet-500/5 to-transparent">
+        <SpotlightCard
+          spotlightColor="rgba(139, 92, 246, 0.25)"
+          className="p-5 sm:p-6 border-violet-500/20 bg-gradient-to-b from-violet-500/5 to-transparent shadow-md"
+        >
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-violet-500/20 border border-violet-500/30 flex items-center justify-center text-violet-400">
+              <div className="w-9 h-9 rounded-2xl bg-violet-500/20 border border-violet-500/30 flex items-center justify-center text-violet-400 shadow-sm">
                 <Key size={15} />
               </div>
               <h3 className="text-sm font-bold text-[var(--color-text-primary)]">OpenRouter AI Intelligence</h3>
@@ -158,20 +166,23 @@ export default function SettingsTab() {
           </div>
 
           <div className="flex items-center justify-between pt-1">
-            <button
+            <ShimmerButton
               onClick={handleSaveKey}
-              className="joy-btn-primary text-xs py-2 px-4"
+              shimmerColor="#a855f7"
+              background="linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)"
+              textColor="#ffffff"
+              className="text-xs py-2 px-5 shadow-[0_2px_14px_rgba(139,92,246,0.3)]"
               id="save-api-key-btn"
             >
               {saved ? (
                 <>
-                  <Check size={14} strokeWidth={2.5} className="text-emerald-600" />
+                  <Check size={14} strokeWidth={2.5} className="text-emerald-300" />
                   <span>Key Saved!</span>
                 </>
               ) : (
                 <span>Save Custom Key</span>
               )}
-            </button>
+            </ShimmerButton>
 
             <a
               href="https://openrouter.ai/keys"
@@ -183,13 +194,16 @@ export default function SettingsTab() {
               <ExternalLink size={11} />
             </a>
           </div>
-        </div>
+        </SpotlightCard>
 
         {/* Section 2: Audio Preferences */}
-        <div className="apple-card p-5 flex items-center justify-between">
+        <SpotlightCard
+          spotlightColor="rgba(6, 182, 212, 0.2)"
+          className="p-5 flex items-center justify-between shadow-sm"
+        >
           <div className="flex items-center gap-3">
             <div
-              className={`w-9 h-9 rounded-xl flex items-center justify-center transition-colors ${
+              className={`w-9 h-9 rounded-2xl flex items-center justify-center transition-colors shadow-sm ${
                 state.soundEnabled
                   ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'
                   : 'bg-[var(--color-surface-panel)] text-[var(--color-text-muted)] border border-[var(--color-surface-border)]'
@@ -221,12 +235,15 @@ export default function SettingsTab() {
               }`}
             />
           </button>
-        </div>
+        </SpotlightCard>
 
         {/* Section 3: Responsible AI & Privacy */}
-        <div className="apple-card p-5 border-emerald-500/20 bg-emerald-500/5">
+        <SpotlightCard
+          spotlightColor="rgba(16, 185, 129, 0.2)"
+          className="p-5 border-emerald-500/20 bg-emerald-500/5 shadow-sm"
+        >
           <div className="flex items-center gap-2.5 mb-2.5">
-            <div className="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+            <div className="w-9 h-9 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-sm">
               <Shield size={16} />
             </div>
             <h3 className="text-sm font-bold text-[var(--color-text-primary)]">Privacy &amp; Ethics Commitment</h3>
@@ -234,10 +251,13 @@ export default function SettingsTab() {
           <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">
             JoyQuest operates strictly locally. Your quests, moods, progress, and community drafts reside exclusively on your device. Prompts are safe micro-activities and never replace medical guidance.
           </p>
-        </div>
+        </SpotlightCard>
 
         {/* Section 4: Data Management */}
-        <div className="apple-card p-5 flex items-center justify-between">
+        <SpotlightCard
+          spotlightColor="rgba(244, 63, 94, 0.18)"
+          className="p-5 flex items-center justify-between shadow-sm"
+        >
           <div>
             <span className="text-sm font-bold text-[var(--color-text-primary)] block">
               Clear Local Storage
@@ -254,7 +274,7 @@ export default function SettingsTab() {
             <Trash2 size={13} />
             <span>Reset Data</span>
           </button>
-        </div>
+        </SpotlightCard>
       </div>
     </div>
   );

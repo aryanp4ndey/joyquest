@@ -7,6 +7,8 @@ import { useApp } from '../context/AppContext';
 import { playClickSound, playStepSound } from '../utils/audio';
 import { triggerMiniSparkle } from '../utils/confetti';
 import { CATEGORIES } from '../data/quests';
+import SpotlightCard from './ui/SpotlightCard';
+import ShimmerButton from './ui/ShimmerButton';
 
 export default function CommunityTab() {
   const { state, actions } = useApp();
@@ -188,18 +190,18 @@ export default function CommunityTab() {
               </div>
             </motion.form>
           ) : (
-            <motion.button
+            <SpotlightCard
               onClick={() => {
                 playClickSound(state.soundEnabled);
                 setShowForm(true);
               }}
-              className="apple-card-interactive w-full p-4 flex items-center justify-between text-left group border-cyan-500/25 bg-cyan-500/5 hover:border-cyan-500/40"
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
+              spotlightColor="rgba(6, 182, 212, 0.25)"
+              tilt={true}
+              className="w-full p-4.5 flex items-center justify-between text-left group border-cyan-500/25 bg-cyan-500/5 hover:border-cyan-500/40 cursor-pointer shadow-md"
               id="show-message-form-btn"
             >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 transition-transform group-hover:scale-110">
+              <div className="flex items-center gap-3.5">
+                <div className="w-10 h-10 rounded-2xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 transition-transform group-hover:scale-110 shadow-sm">
                   <Plus size={18} />
                 </div>
                 <div>
@@ -211,10 +213,15 @@ export default function CommunityTab() {
                   </span>
                 </div>
               </div>
-              <span className="joy-btn-primary text-xs py-1.5 px-3.5">
+              <ShimmerButton
+                shimmerColor="#06b6d4"
+                background="linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)"
+                textColor="#ffffff"
+                className="text-xs py-2 px-4 shadow-[0_2px_14px_rgba(6,182,212,0.3)]"
+              >
                 Leave a Ripple
-              </span>
-            </motion.button>
+              </ShimmerButton>
+            </SpotlightCard>
           )}
         </AnimatePresence>
       </div>
@@ -262,12 +269,11 @@ export default function CommunityTab() {
           const activeBurst = heartBursts.find((b) => b.msgIndex === i);
 
           return (
-            <motion.div
+            <SpotlightCard
               key={i}
-              className="apple-card p-4 sm:p-5 flex flex-col justify-between group hover:bg-[var(--color-surface-card-hover)] transition-all relative overflow-visible"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.03 }}
+              spotlightColor={`${cat.color}25`}
+              tilt={true}
+              className="p-4 sm:p-5 flex flex-col justify-between group hover:bg-[var(--color-surface-card-hover)] transition-all relative overflow-visible shadow-sm"
             >
               <div>
                 <div className="flex items-center gap-2 mb-2.5">
@@ -331,7 +337,7 @@ export default function CommunityTab() {
                   <span className="font-mono text-xs font-bold">{msg.likes}</span>
                 </motion.button>
               </div>
-            </motion.div>
+            </SpotlightCard>
           );
         })}
       </div>

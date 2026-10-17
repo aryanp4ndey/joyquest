@@ -9,6 +9,7 @@ import GardenTab from './components/GardenTab';
 import CommunityTab from './components/CommunityTab';
 import StatsTab from './components/StatsTab';
 import SettingsTab from './components/SettingsTab';
+import BackgroundBeams from './components/ui/BackgroundBeams';
 import { applyAdaptiveGrid } from './utils/adaptiveGrid';
 
 function AppContent() {
@@ -75,12 +76,8 @@ function AppContent() {
 
   return (
     <>
-      {/* Dynamic Living Aurora Orbs */}
-      <div className="living-aurora-bg">
-        <div className="aurora-orb-1" />
-        <div className="aurora-orb-2" />
-        <div className="aurora-orb-3" />
-      </div>
+      {/* Aceternity Living Background Matrix & Beams */}
+      <BackgroundBeams />
 
       {/* Floating Navigation */}
       <Navbar />

@@ -27,6 +27,8 @@ import {
 } from '../data/quests';
 import { MoodCharacter } from './MoodCharacter';
 import QuestCard from './QuestCard';
+import SpotlightCard from './ui/SpotlightCard';
+import ShimmerButton from './ui/ShimmerButton';
 import { playClickSound, playCompleteSound } from '../utils/audio';
 import { triggerQuestConfetti } from '../utils/confetti';
 
@@ -93,28 +95,34 @@ export default function QuestTab() {
     }
   }, [selectedMoodId, selectedTags, selectedTimeId, state.apiKey, state.soundEnabled, actions]);
 
-  const handleQuickPractice = async (practice) => {
+  const handleQuickPractice = (practice) => {
     playClickSound(state.soundEnabled);
-    setLoading(true);
     actions.setMood('calm');
     const timeObj = TIME_OPTIONS.find((t) => t.minutes === parseInt(practice.duration)) || TIME_OPTIONS[1];
     actions.setTime(timeObj);
-    actions.setCategory(practice.category);
+    actions.setCategory(practice.category || 'reflection');
 
-    try {
-      const quest = await generateQuest(
-        'calm',
-        timeObj,
-        practice.category,
-        state.apiKey || null
-      );
-      actions.setQuest(quest);
-      setStep('active');
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+    // Build quest immediately from curated practice data with 0ms delay
+    const quest = {
+      id: practice.id,
+      title: practice.title,
+      description: practice.description || `${practice.title} — An intentional mindful pause.`,
+      steps: practice.steps && practice.steps.length > 0
+        ? practice.steps
+        : [
+            'Find a quiet, comfortable posture and release tension from your shoulders',
+            'Take 3 slow abdominal breaths, savoring the stillness of this pause',
+            'Allow thoughts to pass by gently without judgment',
+            'Return to your day with renewed ease, clarity, and presence',
+          ],
+      reward: practice.reward || `${practice.title} Bloom`,
+      points: practice.points || 25,
+      category: practice.category || 'reflection',
+      aiGenerated: false,
+    };
+
+    actions.setQuest(quest);
+    setStep('active');
   };
 
   const handleComplete = useCallback(() => {
@@ -258,7 +266,11 @@ export default function QuestTab() {
               {/* Right Column: Curated Practices & Special for You */}
               <div className="md:col-span-5 flex flex-col gap-4">
                 {/* Special for You Banner Card */}
-                <div className="apple-card p-5 border-cyan-500/25 bg-gradient-to-br from-cyan-500/12 via-transparent to-transparent">
+                <SpotlightCard
+                  spotlightColor="rgba(6, 182, 212, 0.25)"
+                  tilt={true}
+                  className="p-5 border-cyan-500/25 bg-gradient-to-br from-cyan-500/12 via-transparent to-transparent shadow-lg"
+                >
                   <div className="flex items-center justify-between mb-3">
                     <span className="apple-pill text-[0.6875rem] text-cyan-400 border-cyan-500/30 bg-cyan-500/10">
                       Special for You
@@ -272,13 +284,19 @@ export default function QuestTab() {
                     A short intentional practice designed to anchor your mind in clarity, ease, and appreciation.
                   </p>
                   <button
-                    onClick={() => handleQuickPractice(CURATED_PRACTICES[2])}
-                    className="w-full py-3 px-4 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-zinc-950 font-bold text-xs flex items-center justify-between transition-colors shadow-sm cursor-pointer"
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleQuickPractice(CURATED_PRACTICES[2]);
+                    }}
+                    className="w-full py-3.5 px-5 rounded-2xl bg-cyan-400 hover:bg-cyan-300 active:scale-[0.98] text-zinc-950 font-extrabold text-xs flex items-center justify-between transition-all shadow-[0_4px_16px_rgba(6,182,212,0.35)] cursor-pointer"
+                    id="btn-morning-gratitude"
                   >
                     <span>Begin Morning Gratitude</span>
-                    <Play size={13} className="fill-current" />
+                    <Play size={14} className="fill-current" />
                   </button>
-                </div>
+                </SpotlightCard>
 
                 {/* Recommended Micro-Pauses */}
                 <div>
@@ -295,26 +313,34 @@ export default function QuestTab() {
                     {CURATED_PRACTICES.slice(0, 3).map((item) => (
                       <button
                         key={item.id}
-                        onClick={() => handleQuickPractice(item)}
-                        className="w-full p-4 rounded-2xl flex items-center justify-between text-left transition-all hover:scale-[1.01] shadow-sm cursor-pointer border border-[var(--color-surface-border)]"
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleQuickPractice(item);
+                        }}
+                        className="w-full p-4 rounded-2xl flex items-center justify-between text-left transition-all hover:scale-[1.01] active:scale-[0.99] shadow-sm cursor-pointer border border-[var(--color-surface-border)] relative overflow-hidden group select-none"
                         style={{
                           backgroundColor: item.color,
                           color: item.textColor,
                         }}
+                        id={`btn-practice-${item.id}`}
                       >
-                        <div>
-                          <span className="text-sm font-bold block leading-snug">
-                            {item.title}
-                          </span>
-                          <span className="text-xs font-semibold opacity-75 mt-0.5 block">
-                            {item.duration} &bull; {item.category}
-                          </span>
-                        </div>
-                        <div
-                          className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-950 shrink-0 ml-3"
-                          style={{ backgroundColor: item.playColor }}
-                        >
-                          <Play size={12} className="fill-current ml-0.5" />
+                        <div className="flex items-center justify-between w-full relative z-10 pointer-events-none">
+                          <div>
+                            <span className="text-sm font-bold block leading-snug">
+                              {item.title}
+                            </span>
+                            <span className="text-xs font-semibold opacity-80 mt-0.5 block">
+                              {item.duration} &bull; {item.category}
+                            </span>
+                          </div>
+                          <div
+                            className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-950 shrink-0 ml-3 shadow-md transition-transform group-hover:scale-110"
+                            style={{ backgroundColor: item.playColor }}
+                          >
+                            <Play size={12} className="fill-current ml-0.5" />
+                          </div>
                         </div>
                       </button>
                     ))}
@@ -525,12 +551,13 @@ export default function QuestTab() {
                     Back to Check-in
                   </button>
 
-                  <motion.button
+                  <ShimmerButton
                     onClick={handleGenerateQuest}
                     disabled={loading}
-                    className="joy-btn-primary py-3 px-7 text-xs font-bold"
-                    whileHover={{ scale: 1.04 }}
-                    whileTap={{ scale: 0.96 }}
+                    shimmerColor="#ec4899"
+                    background="linear-gradient(135deg, #a855f7 0%, #ec4899 100%)"
+                    textColor="#ffffff"
+                    className="py-3 px-8 text-xs font-bold shadow-[0_4px_24px_rgba(236,72,153,0.35)]"
                     id="begin-quest-btn"
                   >
                     {loading ? (
@@ -544,7 +571,7 @@ export default function QuestTab() {
                         <Sparkles size={16} />
                       </>
                     )}
-                  </motion.button>
+                  </ShimmerButton>
                 </div>
               </div>
             </div>
@@ -592,57 +619,63 @@ export default function QuestTab() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.92 }}
             transition={{ type: 'spring', damping: 20, stiffness: 280 }}
-            className="max-w-xl mx-auto p-8 sm:p-12 text-center rounded-[2rem] apple-card shadow-[0_20px_50px_rgba(0,0,0,0.3)]"
+            className="max-w-xl mx-auto"
           >
-            {/* Victory Badge */}
-            <motion.div
-              className="w-20 h-20 rounded-3xl bg-[#10e5aa] mx-auto flex items-center justify-center text-zinc-950 mb-6 shadow-[0_0_30px_rgba(16,229,170,0.5)]"
-              animate={{ rotate: [0, -6, 6, 0], scale: [1, 1.08, 1] }}
-              transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
+            <SpotlightCard
+              spotlightColor="rgba(16, 229, 170, 0.3)"
+              tilt={true}
+              className="p-8 sm:p-12 text-center rounded-[2.5rem] shadow-[0_24px_64px_rgba(16,229,170,0.2)]"
             >
-              <Award size={40} strokeWidth={2.4} />
-            </motion.div>
-
-            <h2 className="text-3xl font-extrabold tracking-tight text-[var(--color-text-primary)] mb-2">
-              Quest Complete!
-            </h2>
-            <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mb-6 max-w-sm mx-auto leading-relaxed">
-              You showed up for your calm today. You earned{' '}
-              <span className="text-[#10e5aa] font-bold">
-                +{state.completedQuests[0]?.points || 15} XP
-              </span>{' '}
-              and a new botanical bloom.
-            </p>
-
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-xs font-bold text-emerald-400 mb-8">
-              <Sprout size={15} />
-              <span>A new specimen bloomed in your sanctuary</span>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <motion.button
-                onClick={handleNewQuest}
-                className="joy-btn-primary w-full sm:w-auto"
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.96 }}
-                id="new-quest-btn"
+              {/* Victory Badge */}
+              <motion.div
+                className="w-20 h-20 rounded-3xl bg-[#10e5aa] mx-auto flex items-center justify-center text-zinc-950 mb-6 shadow-[0_0_30px_rgba(16,229,170,0.5)]"
+                animate={{ rotate: [0, -6, 6, 0], scale: [1, 1.08, 1] }}
+                transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
               >
-                <span>New Mood Check-in</span>
-              </motion.button>
-              <motion.button
-                onClick={() => {
-                  actions.setTab('garden');
-                  handleNewQuest();
-                }}
-                className="joy-btn-secondary w-full sm:w-auto flex items-center justify-center gap-2"
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.96 }}
-                id="view-garden-btn"
-              >
-                <Sprout size={16} className="text-emerald-400" />
-                <span>Visit Sanctuary</span>
-              </motion.button>
-            </div>
+                <Award size={40} strokeWidth={2.4} />
+              </motion.div>
+
+              <h2 className="text-3xl font-extrabold tracking-tight text-[var(--color-text-primary)] mb-2">
+                Quest Complete!
+              </h2>
+              <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mb-6 max-w-sm mx-auto leading-relaxed">
+                You showed up for your calm today. You earned{' '}
+                <span className="text-[#10e5aa] font-bold">
+                  +{state.completedQuests[0]?.points || 15} XP
+                </span>{' '}
+                and a new botanical bloom.
+              </p>
+
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-xs font-bold text-emerald-400 mb-8">
+                <Sprout size={15} />
+                <span>A new specimen bloomed in your sanctuary</span>
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                <motion.button
+                  onClick={handleNewQuest}
+                  className="joy-btn-primary w-full sm:w-auto"
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
+                  id="new-quest-btn"
+                >
+                  <span>New Mood Check-in</span>
+                </motion.button>
+                <motion.button
+                  onClick={() => {
+                    actions.setTab('garden');
+                    handleNewQuest();
+                  }}
+                  className="joy-btn-secondary w-full sm:w-auto flex items-center justify-center gap-2"
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
+                  id="view-garden-btn"
+                >
+                  <Sprout size={16} className="text-emerald-400" />
+                  <span>Visit Sanctuary</span>
+                </motion.button>
+              </div>
+            </SpotlightCard>
           </motion.div>
         )}
       </AnimatePresence>
