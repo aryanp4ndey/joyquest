@@ -128,21 +128,15 @@ export default function SettingsTab() {
               <div className="w-9 h-9 rounded-xl bg-violet-500/20 border border-violet-500/30 flex items-center justify-center text-violet-400">
                 <Key size={15} />
               </div>
-              <h3 className="text-sm font-bold text-[var(--color-text-primary)]">Gemini Intelligence</h3>
+              <h3 className="text-sm font-bold text-[var(--color-text-primary)]">OpenRouter AI Intelligence</h3>
             </div>
-            <span
-              className={`apple-pill text-[0.6875rem] font-bold ${
-                state.apiKey
-                  ? 'text-emerald-500 border-emerald-500/30 bg-emerald-500/10'
-                  : 'text-[var(--color-text-muted)]'
-              }`}
-            >
-              {state.apiKey ? 'Connected' : 'Curated Studio Quests'}
+            <span className="apple-pill text-[0.6875rem] font-bold text-emerald-400 border-emerald-500/30 bg-emerald-500/10">
+              {state.apiKey ? 'Custom Key Set' : 'Active (Server Key Connected)'}
             </span>
           </div>
 
           <p className="text-xs text-[var(--color-text-muted)] mb-3 leading-relaxed">
-            Provide a Google Gemini API key to enable real-time dynamic quest generation. Without a key, JoyQuest seamlessly serves our curated collection of 48+ crafted quests.
+            JoyQuest uses OpenRouter to synthesize unique, real-time mindful quests on the fly. Your server key is connected by default, or you can paste a custom key below to override.
           </p>
 
           <div className="relative mb-3">
@@ -150,7 +144,7 @@ export default function SettingsTab() {
               type={showKey ? 'text' : 'password'}
               value={tempKey}
               onChange={(e) => setTempKey(e.target.value)}
-              placeholder="Paste Gemini API key..."
+              placeholder="Paste OpenRouter API key (sk-or-v1-...)"
               className="apple-input text-xs pr-10 font-mono"
               id="api-key-input"
             />
@@ -175,17 +169,17 @@ export default function SettingsTab() {
                   <span>Key Saved!</span>
                 </>
               ) : (
-                <span>Save Key</span>
+                <span>Save Custom Key</span>
               )}
             </button>
 
             <a
-              href="https://aistudio.google.com/apikey"
+              href="https://openrouter.ai/keys"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-[0.6875rem] text-violet-400 hover:underline font-semibold"
             >
-              <span>Get API key from Google AI Studio</span>
+              <span>Manage on OpenRouter</span>
               <ExternalLink size={11} />
             </a>
           </div>

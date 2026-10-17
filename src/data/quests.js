@@ -823,83 +823,30 @@ export function getFallbackQuest(mood, category) {
  * The AI integration is optional and can be swapped for any provider.
  */
 export async function generateQuest(mood, timeOption, category, apiKey = null) {
-  // If API key provided, try AI generation
-  if (apiKey) {
-    try {
-      const quest = await generateAIQuest(mood, timeOption, category, apiKey);
-      if (quest) return quest;
-    } catch (err) {
-      console.warn('AI quest generation failed, using fallback:', err.message);
+  try {
+    const response = await fetch('/api/generate-quest', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        mood,
+        timeOption,
+        category,
+        apiKey: apiKey || undefined,
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      if (data.success && data.quest) {
+        return data.quest;
+      }
     }
+  } catch (err) {
+    console.warn('AI quest generation failed, using curated quest:', err.message);
   }
 
   // Fallback to curated quest
   return getFallbackQuest(mood, category);
-}
-
-/**
- * AI quest generation using the Gemini API.
- * Uses constrained prompts and validates the output structure.
- */
-async function generateAIQuest(mood, timeOption, category, apiKey) {
-  const prompt = `You are a wellbeing quest generator for JoyQuest, an app that encourages small positive actions.
-
-Generate ONE short, safe, and positive quest based on:
-- Mood: ${mood}
-- Available time: ${timeOption.label}
-- Category: ${category}
-
-Requirements:
-- The quest must be completable in ${timeOption.minutes} minutes or less
-- It must be safe, positive, and suitable for all ages
-- No medical advice, no dangerous activities
-- Focus on small, actionable steps that bring joy
-- Be specific and creative, not generic
-
-Respond in this EXACT JSON format (no other text):
-{
-  "title": "Short catchy title (3-5 words)",
-  "description": "One sentence describing the quest (max 100 chars)",
-  "steps": ["Step 1", "Step 2", "Step 3", "Step 4"],
-  "reward": "Two-word badge name",
-  "points": 15
-}`;
-
-  const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: {
-          temperature: 0.8,
-          maxOutputTokens: 300,
-          responseMimeType: 'application/json',
-        },
-      }),
-    }
-  );
-
-  if (!response.ok) throw new Error(`API returned ${response.status}`);
-
-  const data = await response.json();
-  const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!text) throw new Error('No content in response');
-
-  const quest = JSON.parse(text);
-
-  // Validate structure
-  if (!quest.title || !quest.description || !Array.isArray(quest.steps) || quest.steps.length < 2) {
-    throw new Error('Invalid quest structure');
-  }
-
-  return {
-    ...quest,
-    category,
-    points: Math.min(Math.max(quest.points || 15, 5), 30), // Clamp points 5-30
-    aiGenerated: true,
-  };
 }
 
 // ─── Community Messages (fallback / seed data) ───
